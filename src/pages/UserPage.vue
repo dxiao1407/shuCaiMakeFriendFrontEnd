@@ -1,9 +1,11 @@
 <template>
-主页
+个人
 </template>
 
-<script setup>
-
+<script>
+export default {
+  name: "User"
+}
 </script>
 
 <style scoped>

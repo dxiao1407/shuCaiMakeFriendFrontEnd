@@ -6,35 +6,32 @@
       <van-icon name="search" size="18"/>
     </template>
   </van-nav-bar>
+  <div id="content">
+    <router-view></router-view>
 
-  <slot name="content">
-    <template v-if="active === 'index'">
-      <Index></Index>
-    </template>
-    <template v-if="active === 'team'">
-      <Team></Team>
-    </template>
+  </div>
 
+<!--  <slot name="content">-->
+<!--  </slot>-->
 
-  </slot>
-
-  <van-tabbar v-model="active" @change="onChange">
-    <van-tabbar-item icon="home-o" name="index">主页</van-tabbar-item>
-    <van-tabbar-item icon="search" name="team">队伍</van-tabbar-item>
-    <van-tabbar-item icon="friends-o" name="user">个人</van-tabbar-item>
+  <van-tabbar route  @change="onChange">
+    <van-tabbar-item to="/" icon="home-o" name="index">主页</van-tabbar-item>
+    <van-tabbar-item to="/team" icon="search" name="team">队伍</van-tabbar-item>
+    <van-tabbar-item to="/user" icon="friends-o" name="user">个人</van-tabbar-item>
   </van-tabbar>
 </template>
 
 <script setup>
-import {ref} from 'vue';
-import Index from "../pages/Index.vue";
-import Team from "../pages/Team.vue";
-
-const active = ref("index");
+import {useRouter} from "vue-router";
 
 
-const onClickLeft = () => showToast('1');
-const onClickRight = () => showToast('2');
+const router = useRouter()
+const onClickLeft = () => {
+  router.push({ path: '/' })
+};
+const onClickRight = () => {
+  router.push({ path: '/search' })
+};
 const onChange = (index) => showToast(`标签 ${index}`);
 </script>
 
