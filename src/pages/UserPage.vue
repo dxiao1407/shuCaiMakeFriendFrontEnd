@@ -1,25 +1,34 @@
 <template>
-  <van-cell title="昵称" to="/user/edit" is-link :value="user.userName"/>
-  <van-cell title="账号" :value="user.userAccount"/>
-  <van-cell title="头像" to="/user/edit" is-link>
-    <van-image
-        width="50"
-        :src="user.avatarUrl"
-    />
-  </van-cell>
-  <van-cell title="性别" to="/user/edit" is-link :value="user.gender" @click="toEdit('gender','性别',user.gender)"/>
-  <van-cell title="邮箱" to="/user/edit" is-link :value="user.email"/>
-  <van-cell title="电话" to="/user/edit" is-link :value="user.phone"/>
-  <van-cell title="基地编号" :value="user.planentCode"/>
-  <van-cell title="注册时间" :value="user.createTime.toISOString()"/>
-
+  <template v-if="user">
+    <van-cell title="昵称" to="/user/edit" is-link :value="user.userName"
+              @click="toEdit('userName','昵称',user.userName)"/>
+    <van-cell title="账号" :value="user.userAccount"/>
+    <van-cell title="头像" to="/user/edit" is-link>
+      <van-image
+          width="50"
+          :src="user.avatarUrl"
+      />
+    </van-cell>
+    <van-cell title="性别" to="/user/edit" is-link :value="user.gender ==1 ? '男':'女'"
+              @click="toEdit('gender','性别',user.gender)"/>
+    <van-cell title="邮箱" to="/user/edit" is-link :value="user.email"
+              @click="toEdit('email','邮箱',user.email)"/>
+    <van-cell title="电话" to="/user/edit" is-link :value="user.phone"
+              @click="toEdit('phone','电话',user.phone)"/>
+    <van-cell title="基地编号" :value="user.planetCode"/>
+    <van-cell title="注册时间" :value="user.createTime"/>
+  </template>
 
 </template>
 
 <script setup lang="ts">
 import {useRouter} from "vue-router";
+import {onMounted, ref} from "vue";
+import myAxios from "../plugins/myAxios.js";
+import {showFailToast, showSuccessToast} from "vant";
+import {getCurrentUser} from "../services/user";
 
-const user = {
+const mockUser = {
   id: 1,
   userName: '火爆番茄炒蛋',
   userAccount: "useradmin",
@@ -30,6 +39,12 @@ const user = {
   planentCode: "123",
   createTime: new Date(),
 };
+onMounted(async () => {
+  user.value = await getCurrentUser();
+
+})
+
+const user = ref();
 const router = useRouter();
 const toEdit = (editKey: string, editName: string, currentValue: string) => {
   router.push({

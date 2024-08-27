@@ -1,4 +1,4 @@
-export type CurrentUser = {
+export type UserType = {
     phone: string;
     id: number;
     userName: string;

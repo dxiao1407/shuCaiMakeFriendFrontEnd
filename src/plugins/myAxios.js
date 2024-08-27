@@ -5,6 +5,8 @@ const myAxios = axios.create({
     baseURL: 'http://localhost:8080/api'
 });
 
+myAxios.defaults.withCredentials = true//开启发送请求带着cookie
+
 // Add a request interceptor
 myAxios.interceptors.request.use(function (config) {
     console.log("我要发请求啦！！！",config);
@@ -19,7 +21,7 @@ myAxios.interceptors.request.use(function (config) {
 myAxios.interceptors.response.use(function (response) {
     console.log("我收到相应啦！！！",response);
     // Do something with response data
-    return response;
+    return response.data;
 }, function (error) {
     // Do something with response error
     return Promise.reject(error);
