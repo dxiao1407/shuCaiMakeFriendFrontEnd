@@ -1,0 +1,44 @@
+<template>
+  <van-card
+      v-for="(user, index) in props.userList"
+      :key="index"
+      :tag="user.userRole === 0 ? '' : 'VIP'"
+      :desc="user.profile"
+      :title="`${user.userName}#${user.planetCode}`"
+      :thumb="user.avatarUrl"
+  >
+    <!-- tags 插槽 -->
+    <template #tags>
+      <van-tag plain type="primary" v-for="(tag, idx) in user.tags" :key="idx"
+               style="margin-right: 6px;margin-top: 6px">
+        {{ tag }}
+      </van-tag>
+    </template>
+
+    <!-- footer 插槽 -->
+    <template #footer>
+      <van-button size="mini">CallMe</van-button>
+    </template>
+  </van-card>
+</template>
+
+<script setup lang="ts">
+import {UserType} from "../models/user";
+
+//props传值
+interface UserCardListProps{
+  userList:UserType[];
+}
+
+//@ts-ignore
+const props = withDefaults(defineProps<UserCardListProps>(), {
+  loading: true,
+  // @ts-ignore
+  userList: [] as UserType[],
+});
+
+</script>
+
+<style scoped>
+
+</style>

@@ -1,29 +1,6 @@
 <template>
-  <van-card
-      v-for="(user, index) in userList"
-      :key="index"
-      :tag="user.userRole === 0 ? '' : 'VIP'"
-      :desc="user.profile"
-      :title="`${user.userName}#${user.planetCode}`"
-      :thumb="user.avatarUrl"
-  >
-    <!-- tags 插槽 -->
-    <template #tags>
-      <van-tag plain type="primary" v-for="(tag, idx) in user.tags" :key="idx"
-               style="margin-right: 6px;margin-top: 6px">
-        {{ tag }}
-      </van-tag>
-    </template>
-
-    <!-- footer 插槽 -->
-    <template #footer>
-      <van-button size="mini">CallMe</van-button>
-    </template>
-  </van-card>
-
+  <UserCardList :user-list="userList"></UserCardList>
   <van-empty v-if="!userList || userList.length < 1" description="搜索结果为空"/>
-
-
 </template>
 
 <script setup>
@@ -31,6 +8,7 @@ import {onMounted, ref} from 'vue';
 import {useRoute} from "vue-router";
 import myAxios from "../plugins/myAxios.js";
 import qs from "qs";
+import UserCardList from "../components/UserCardList.vue";
 
 
 const route = useRoute();
@@ -71,7 +49,7 @@ onMounted(async () => {
           type: 'success',
           message: '请求成功'
         });
-        return response.data?.data;
+        return response?.data;
       })
       .catch(function (error) {
         // handle error

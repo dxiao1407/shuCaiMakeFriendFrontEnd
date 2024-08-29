@@ -24,7 +24,6 @@ import {onMounted, ref} from "vue";
 import myAxios from "../plugins/myAxios.js";
 import {showFailToast, showSuccessToast} from "vant";
 import {getCurrentUser} from "../services/user";
-import {getCurrentUserState} from "../states/user";
 
 const router = useRouter()
 const route = useRoute()
