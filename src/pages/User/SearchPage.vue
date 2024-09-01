@@ -1,5 +1,5 @@
 <template>
-  <form action="/">
+  <form action="/public">
     <van-search
         v-model="searchValue"
         show-action

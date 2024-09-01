@@ -1,3 +1,6 @@
+/**
+ * 用户类别
+ */
 export type UserType = {
     phone: string;
     id: number;

@@ -5,7 +5,7 @@
       :tag="user.userRole === 0 ? '' : 'VIP'"
       :desc="user.profile"
       :title="`${user.userName}#${user.planetCode}`"
-      :thumb="user.avatarUrl"
+      :thumb="user.avatarUrl ? user.avatarUrl : FALLBACK_LOGO"
   >
     <!-- tags 插槽 -->
     <template #tags>
@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import {UserType} from "../models/user";
+import {FALLBACK_LOGO} from "../constant";
 
 //props传值
 interface UserCardListProps{

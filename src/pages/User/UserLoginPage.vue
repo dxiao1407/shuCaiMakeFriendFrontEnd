@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import {ref} from "vue";
-import myAxios from "../plugins/myAxios.js";
+import myAxios from "../../plugins/myAxios.js";
 import {showFailToast, showSuccessToast} from "vant";
 import {useRouter} from "vue-router";
 

@@ -6,7 +6,7 @@
     <van-cell title="头像" to="/user/edit" is-link>
       <van-image
           width="50"
-          :src="user.avatarUrl"
+          :src="user.avatarUrl ? user.avatarUrl:FALLBACK_LOGO"
       />
     </van-cell>
     <van-cell title="性别" to="/user/edit" is-link :value="user.gender ==1 ? '男':'女'"
@@ -24,9 +24,10 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
-import myAxios from "../plugins/myAxios.js";
+import myAxios from "../../plugins/myAxios.js";
 import {showFailToast, showSuccessToast} from "vant";
-import {getCurrentUser} from "../services/user";
+import {getCurrentUser} from "../../services/user";
+import {FALLBACK_LOGO} from "../../constant";
 
 const mockUser = {
   id: 1,
