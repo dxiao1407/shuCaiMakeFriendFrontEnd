@@ -1,0 +1,8 @@
+.add-button {
+    position: fixed;
+    bottom: 55px;
+    left: 8px; /* 确保它在左下角 */
+    z-index: 9999; /* 设置一个足够大的 z-index 值，确保它在最上层 */
+    border-radius: 50%;
+    opacity: 0.7; /* 设置透明度为 70% */
+}

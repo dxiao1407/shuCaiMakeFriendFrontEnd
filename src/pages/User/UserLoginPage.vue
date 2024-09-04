@@ -31,9 +31,10 @@
 import {ref} from "vue";
 import myAxios from "../../plugins/myAxios.js";
 import {showFailToast, showSuccessToast} from "vant";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 
 const router = useRouter();
+const route = useRoute();
 const userAccount = ref('');
 const userPassword = ref('');
 const onSubmit = async (values) => {
@@ -43,7 +44,10 @@ const onSubmit = async (values) => {
   })
   if(res.code === 0 && res.data){
     showSuccessToast("登录成功");
-    router.replace("/");//和push不同的是，它可以覆盖这个路径，如果回退的话，就不会回到登录页面，而是回到登录之前的页面
+    // router.replace("/");//和push不同的是，它可以覆盖这个路径，如果回退的话，就不会回到登录页面，而是回到登录之前的页面
+    //这里是路由上带的参数
+    const redirectUrl = route.query?.redirect as String  ;
+    window.location.href = redirectUrl;
   }
   else{
     showFailToast("登录失败");

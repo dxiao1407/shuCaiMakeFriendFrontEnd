@@ -8,8 +8,8 @@ import UserUpdatePage from "../pages/User/UserUpdatePage.vue";
 import SearchPage from "../pages/User/SearchPage.vue";
 import SearchResultPage from "../pages/User/SearchResultPage.vue";
 import UserLoginPage from "../pages/User/UserLoginPage.vue";
-import UserTeamCreatePage from "../pages/User/UserTeamCreatePage.vue";
-import UserTeamJoinPage from "../pages/User/UserTeamJoinPage.vue";
+import UserTeamCreatePage from "../pages/Team/UserTeamCreatePage.vue";
+import UserTeamJoinPage from "../pages/Team/UserTeamJoinPage.vue";
 
 
 const routes = [

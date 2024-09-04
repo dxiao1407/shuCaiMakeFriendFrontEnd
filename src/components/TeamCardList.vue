@@ -22,12 +22,23 @@
       </template>
       <!-- footer 插槽 -->
       <template #footer>
-        <van-button v-if="team.userVoList.id === currentUser.id" size="small" type="success" plain @click="doUpdateTeam(team.id,userLengths[index])">更新队伍</van-button>
-        <van-button size="small" type="danger" v-if="team.userVoList.id === currentUser.id" plain @click="doDeleteTeam(team.id)">解散队伍</van-button>
-        <van-button size="small" type="primary" v-if="team.hasJoin" plain @click="doQuitTeam(team.id)">退出队伍</van-button>
-        <van-button size="small" type="primary" v-if="team.userVoList.id !== currentUser.id && !team.hasJoin" plain @click="doJoinTeam(team.id)">加入队伍</van-button>
+        <van-button v-if="team.userVoList.id === currentUser.id" size="small" type="success" plain
+                    @click="doUpdateTeam(team.id,userLengths[index])">更新队伍
+        </van-button>
+        <van-button size="small" type="danger" v-if="team.userVoList.id === currentUser?.id" plain
+                    @click="doDeleteTeam(team.id)">解散队伍
+        </van-button>
+        <van-button size="small" type="primary" v-if="team.userVoList.id === currentUser?.id ||team.hasJoin" plain
+                    @click="doQuitTeam(team.id)">退出队伍
+        </van-button>
+        <van-button size="small" type="primary" v-if="team.userVoList.id !== currentUser?.id && !team.hasJoin" plain
+                    @click="preJoinTeam(team)">加入队伍
+        </van-button>
       </template>
     </van-card>
+    <van-dialog v-model:show="showPasswordDialog" title="请输入密码" show-cancel-button @confirm="doJoinTeam" @cancel="onCancel">
+      <van-field v-model="inputPassword" placeholder="请输入密码"/>
+    </van-dialog>
   </div>
 
 </template>
@@ -41,7 +52,6 @@ import {showFailToast, showSuccessToast} from "vant";
 import {onMounted, ref, watch} from 'vue';
 import {getCurrentUser} from "../services/user";
 import {useRouter} from "vue-router";
-import {UserType} from "../models/user"; // 从 vue 包中导入 reactive
 
 //props传值
 interface TeamCardListProps {
@@ -56,21 +66,45 @@ const props = withDefaults(defineProps<TeamCardListProps>(), {
 });
 const currentUser = ref();
 const router = useRouter();
+const showPasswordDialog = ref(false);
+const inputPassword = ref('');
+const joinTeamId = ref(0)
+const preJoinTeam = (team:TeamType) => {
+  joinTeamId.value = team.id;
+  if (team.teamState === 0) {
+    doJoinTeam()
+  } else {
+    showPasswordDialog.value = true
+  }
+
+}
+
 /**
  * 加入队伍
  * @param id
  */
-const doJoinTeam = async (id: number) => {
+const doJoinTeam = async () => {
+  if(!joinTeamId.value){
+    return ;
+  }
+  showPasswordDialog.value = true;
   const res = await myAxios.post("/team/join", {
-    id: id
+    id: joinTeamId.value,
+    teamPassword: inputPassword.value
   })
   //@ts-ignore
   if (res?.code === 0) {
     showSuccessToast("加入成功")
+    onCancel()
   } else {
     //@ts-ignore
     showFailToast("加入失败" + (res.description ? `,${res.description}` : ''))
   }
+}
+
+const onCancel = ()=>{
+  joinTeamId.value = 0;
+  inputPassword.value = ''
 }
 const userLengths = ref([]);
 /**
@@ -106,7 +140,7 @@ onMounted(async () => {
  * @param id
  * @param userLengths
  */
-const doUpdateTeam = (id: number,  userLengths: number) => {
+const doUpdateTeam = (id: number, userLengths: number) => {
   router.push({
     path: "/team/update",
     query: {
