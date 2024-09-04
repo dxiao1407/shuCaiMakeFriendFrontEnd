@@ -22,7 +22,10 @@
       </template>
       <!-- footer 插槽 -->
       <template #footer>
-        <van-button size="small" type="primary" plain @click="doJoinTeam(team.id)">加入队伍</van-button>
+        <van-button v-if="team.userVoList.id === currentUser.id" size="small" type="success" plain @click="doUpdateTeam(team.id,userLengths[index])">更新队伍</van-button>
+        <van-button size="small" type="danger" v-if="team.userVoList.id === currentUser.id" plain @click="doDeleteTeam(team.id)">解散队伍</van-button>
+        <van-button size="small" type="primary" v-if="team.hasJoin" plain @click="doQuitTeam(team.id)">退出队伍</van-button>
+        <van-button size="small" type="primary" v-if="team.userVoList.id !== currentUser.id && !team.hasJoin" plain @click="doJoinTeam(team.id)">加入队伍</van-button>
       </template>
     </van-card>
   </div>
@@ -35,7 +38,10 @@ import {TeamType} from "../models/team";
 import {teamStatusEnum} from "../constant/team";
 import myAxios from "../plugins/myAxios.js";
 import {showFailToast, showSuccessToast} from "vant";
-import {onMounted, ref, watch} from 'vue'; // 从 vue 包中导入 reactive
+import {onMounted, ref, watch} from 'vue';
+import {getCurrentUser} from "../services/user";
+import {useRouter} from "vue-router";
+import {UserType} from "../models/user"; // 从 vue 包中导入 reactive
 
 //props传值
 interface TeamCardListProps {
@@ -48,7 +54,8 @@ const props = withDefaults(defineProps<TeamCardListProps>(), {
   // @ts-ignore
   teamList: [] as TeamType[],
 });
-
+const currentUser = ref();
+const router = useRouter();
 /**
  * 加入队伍
  * @param id
@@ -90,9 +97,56 @@ watch(() => props.teamList, (newVal) => {
   }
 }, {immediate: true});
 //组件渲染完成后执行
-onMounted(() => {
-  getUserCountForTeams(props.teamList);
+onMounted(async () => {
+  await getUserCountForTeams(props.teamList);
+  currentUser.value = await getCurrentUser()
 });
+/**
+ * 更新队伍
+ * @param id
+ * @param userLengths
+ */
+const doUpdateTeam = (id: number,  userLengths: number) => {
+  router.push({
+    path: "/team/update",
+    query: {
+      id: id,
+      userLengths: userLengths // 这里直接传递 userLengths 作为一个普通的数字值
+    }
+  })
+}
+/**
+ * 删除队伍
+ * @param id
+ */
+const doQuitTeam = async (id: number) => {
+  const res = await myAxios.post("/team/quit", {
+    id: id
+  })
+  //@ts-ignore
+  if (res?.code === 0) {
+    showSuccessToast("操作成功")
+  } else {
+    //@ts-ignore
+    showFailToast("操作失败" + (res.description ? `,${res.description}` : ''))
+  }
+}
+/**
+ * 解散队伍
+ * @param id
+ */
+const doDeleteTeam = async (id: number) => {
+  const res = await myAxios.post("/team/delete", {
+    id
+  })
+  //@ts-ignore
+  if (res?.code === 0) {
+    showSuccessToast("操作成功")
+  } else {
+    //@ts-ignore
+    showFailToast("操作失败" + (res.description ? `,${res.description}` : ''))
+  }
+}
 
 
 // 格式化时间

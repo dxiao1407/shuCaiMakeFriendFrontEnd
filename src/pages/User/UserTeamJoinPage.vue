@@ -1,7 +1,6 @@
 <template>
   <div id = "teamPage">
     <van-search v-model="searchText" @search="onSearch" placeholder="请输入搜索队伍关键词" />
-    <van-button type="primary" @click = "addTeam()">创建队伍</van-button>
     <team-card-list :team-list="teamList"></team-card-list>
     <van-empty v-if="teamList?.length < 1" description="数据为空"/>
 
@@ -14,7 +13,7 @@ import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import TeamCardList from "../../components/TeamCardList.vue";
 import myAxios from "../../plugins/myAxios.js";
-import {showFailToast, showSuccessToast} from "vant";
+import {showFailToast} from "vant";
 
 const router = useRouter();
 const teamList = ref([]);
@@ -24,15 +23,8 @@ onMounted( ()=>{
    listTeam('');
 })
 
-//跳转到加入队伍页面
-const addTeam = () =>{
-  router.push({
-    path:"/team/add"
-  })
-}
-
 const listTeam = async (val) =>{
-  const res = await myAxios.get("/team/list",{
+  const res = await myAxios.get("/team/list/my/join",{
     params:{
       searchText:val
     }

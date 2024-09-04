@@ -45,10 +45,6 @@ onMounted(async () => {
       .then(function (response) {
         // handle success
         console.log('/user/search/tags', response);
-        showToast({
-          type: 'success',
-          message: '请求成功'
-        });
         return response?.data;
       })
       .catch(function (error) {

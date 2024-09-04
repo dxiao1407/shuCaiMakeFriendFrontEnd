@@ -14,5 +14,5 @@ export type TeamType = {
     teamPassword?: string;
     createTime: Date;
     updateTime: Date;
-    createUser?:UserType;
+    userVoList?:UserType;
 };
