@@ -1,9 +1,13 @@
 import axios from "axios";
 
+const isDev = process.env.NODE_PATH === 'development'
+// const myAxios = axios.create({
+//     baseURL: isDev ? 'http://localhost:8080/api' : '线上接口'
+// });
 // Set config defaults when creating the instance
 const myAxios = axios.create({
-    // baseURL: import.meta.env.VITE_API_BASE_URL ||'http://localhost:8080/api'
-    baseURL: '/api',  // 改为 '/api'，通过代理进行请求
+    baseURL: import.meta.env.VITE_API_BASE_URL ||'http://localhost:8080/api'
+    // baseURL: '/api',  // 改为 '/api'，通过代理进行请求
 });
 
 
