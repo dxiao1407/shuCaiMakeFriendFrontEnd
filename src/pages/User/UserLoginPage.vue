@@ -48,8 +48,9 @@ const onSubmit = async (values) => {
     showSuccessToast("登录成功");
     // router.replace("/");//和push不同的是，它可以覆盖这个路径，如果回退的话，就不会回到登录页面，而是回到登录之前的页面
     //这里是路由上带的参数
-    const redirectUrl = route.query?.redirect as String  ;
-    console.log("redicerUrl",redirectUrl)
+    router.back()
+    // const redirectUrl = route.query?.redirect as String  ;
+    // console.log("redicerUrl",redirectUrl)
     // window.location.href = redirectUrl;
   }
   else{
