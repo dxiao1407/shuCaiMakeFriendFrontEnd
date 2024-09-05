@@ -43,7 +43,7 @@ const onSubmit = async (values) => {
     userAccount: userAccount.value,
     userPassword: userPassword.value
   })
-  showSuccessToast(res);
+  console.log("res",res)
   if(res.code === 0 && res.data){
     showSuccessToast("登录成功");
     // router.replace("/");//和push不同的是，它可以覆盖这个路径，如果回退的话，就不会回到登录页面，而是回到登录之前的页面
