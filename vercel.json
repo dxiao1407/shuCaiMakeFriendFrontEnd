@@ -3,6 +3,10 @@
     {
       "source": "/api/(.*)",
       "destination": "https://shucai-back-121016-6-1323617360.sh.run.tcloudbase.com/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
