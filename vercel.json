@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "http://111.230.72.91:8081/api/$1"
+      "destination": "https://shucai-back-121016-6-1323617360.sh.run.tcloudbase.com/api/$1"
     }
   ]
 }
