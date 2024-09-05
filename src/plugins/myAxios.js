@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const isDev = process.env.NODE_PATH === 'development'
+// const isDev = process.env.NODE_PATH === 'development'
 // const myAxios = axios.create({
 //     baseURL: isDev ? 'http://localhost:8080/api' : '线上接口'
 // });
@@ -29,7 +29,7 @@ myAxios.interceptors.response.use(function (response) {
     //未登录重定向到登陆页面
     if(response?.data?.code === 40100  ){
         const redirectUrl   = window.location.href;
-        window.location.href =` /api/user/login?redirect=${redirectUrl}`
+        window.location.href =` /user/login?redirect=${redirectUrl}`
     }
     // Do something with response data
     return response.data;
