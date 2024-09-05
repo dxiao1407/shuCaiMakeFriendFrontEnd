@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Set config defaults when creating the instance
 const myAxios = axios.create({
-    baseURL: 'http://localhost:8080/api'
+    baseURL: import.meta.env.VITE_API_BASE_URL ||'http://localhost:8080/api'
 });
 
 myAxios.defaults.withCredentials = true//开启发送请求带着cookie
