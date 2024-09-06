@@ -1,5 +1,5 @@
 export const SYSTEM_LOGO = "https://img1.baidu.com/it/u=4289781052,1347064092&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500";
-export const FALLBACK_LOGO = "https://img2.baidu.com/it/u=3452879085,3831791135&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=400";
+export const FALLBACK_LOGO = "https://img.redocn.com/sheji/20190611/qixingguanggaohaibao_10396519.jpg";
 /**
  * 模板创建地址
  */
