@@ -1,41 +1,43 @@
 <template>
   <div id='teamCardList'>
-    <!--    todo 当前人数展示  -->
-    <van-card
-        v-for="(team, index) in props.teamList"
-        :key="index"
-        :tag="teamStatusEnum[team.teamState]"
-        :thumb="FALLBACK_LOGO"
-        :desc="team.description"
-        :title="`${team.teamName}#人数(${team.hasJoinNum}/${team.maxNum})`"
-    >
-      <!-- tags 插槽 -->
-      <template #bottom>
-        <div>{{ '创建时间:' + formatDate(team.createTime) }}</div>
-        <div v-if="team.expireTime">{{ '过期时间:' + formatDate(team.expireTime) }}</div>
-      </template>
-      <template #tags>
-        <van-tag plain type="primary" style="margin-right: 6px;margin-top: 6px">
-          队长：{{ team.userVoList.userName }}
-        </van-tag>
-      </template>
-      <!-- footer 插槽 -->
-      <template #footer>
-        <van-button v-if="team.userVoList.id === currentUser.id" size="small" type="success" plain
-                    @click="doUpdateTeam(team.id,userLengths[index])">更新队伍
-        </van-button>
-        <van-button size="small" type="danger" v-if="team.userVoList.id === currentUser?.id" plain
-                    @click="doDeleteTeam(team.id)">解散队伍
-        </van-button>
-        <van-button size="small" type="primary" v-if="team.userVoList.id === currentUser?.id ||team.hasJoin" plain
-                    @click="doQuitTeam(team.id)">退出队伍
-        </van-button>
-        <van-button size="small" type="primary" v-if="team.userVoList.id !== currentUser?.id && !team.hasJoin" plain
-                    @click="preJoinTeam(team)">加入队伍
-        </van-button>
-      </template>
-    </van-card>
-    <van-dialog v-model:show="showPasswordDialog" title="请输入密码" show-cancel-button @confirm="doJoinTeam" @cancel="onCancel">
+    <van-skeleton title avatar :row="3" :loading="props.loading" v-for="(team, index) in props.teamList">
+      <van-card
+          :key="index"
+          :tag="teamStatusEnum[team.teamState]"
+          :thumb="FALLBACK_LOGO"
+          :desc="team.description"
+          :title="`${team.teamName}#人数(${team.hasJoinNum}/${team.maxNum})`"
+      >
+        <template #bottom>
+          <div>{{ '创建时间:' + formatDate(team.createTime) }}</div>
+          <div v-if="team.expireTime">{{ '过期时间:' + formatDate(team.expireTime) }}</div>
+        </template>
+        <!-- tags 插槽 -->
+        <template #tags>
+          <van-tag plain type="primary" style="margin-right: 6px;margin-top: 6px">
+            队长：{{ team.userVoList.userName }}
+          </van-tag>
+        </template>
+        <!-- footer 插槽 -->
+        <template #footer>
+          <van-button v-if="team.userVoList.id === currentUser.id" size="small" type="success" plain
+                      @click="doUpdateTeam(team.id,userLengths[index])">更新队伍
+          </van-button>
+          <van-button size="small" type="danger" v-if="team.userVoList.id === currentUser?.id" plain
+                      @click="doDeleteTeam(team.id)">解散队伍
+          </van-button>
+          <van-button size="small" type="primary" v-if="team.userVoList.id === currentUser?.id ||team.hasJoin" plain
+                      @click="doQuitTeam(team.id)">退出队伍
+          </van-button>
+          <van-button size="small" type="primary" v-if="team.userVoList.id !== currentUser?.id && !team.hasJoin" plain
+                      @click="preJoinTeam(team)">加入队伍
+          </van-button>
+        </template>
+      </van-card>
+    </van-skeleton>
+
+    <van-dialog v-model:show="showPasswordDialog" title="请输入密码" show-cancel-button @confirm="doJoinTeam"
+                @cancel="onCancel">
       <van-field v-model="inputPassword" placeholder="请输入密码"/>
     </van-dialog>
   </div>
@@ -55,6 +57,8 @@ import {formatDate} from "../utils/utils";
 
 //props传值
 interface TeamCardListProps {
+  loading:Boolean
+
   teamList: TeamType[];
 }
 
@@ -69,7 +73,7 @@ const router = useRouter();
 const showPasswordDialog = ref(false);
 const inputPassword = ref('');
 const joinTeamId = ref(0)
-const preJoinTeam = (team:TeamType) => {
+const preJoinTeam = (team: TeamType) => {
   joinTeamId.value = team.id;
   if (team.teamState === 0) {
     doJoinTeam()
@@ -85,8 +89,8 @@ const preJoinTeam = (team:TeamType) => {
  * @param id
  */
 const doJoinTeam = async () => {
-  if(!joinTeamId.value){
-    return ;
+  if (!joinTeamId.value) {
+    return;
   }
   const res = await myAxios.post("/team/join", {
     id: joinTeamId.value,
@@ -102,7 +106,7 @@ const doJoinTeam = async () => {
   }
 }
 
-const onCancel = ()=>{
+const onCancel = () => {
   joinTeamId.value = 0;
   inputPassword.value = ''
 }

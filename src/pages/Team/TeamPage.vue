@@ -7,7 +7,7 @@
     </van-tabs>
     <div style="margin-bottom: 8px"/>
     <van-button class="add-button" type="primary" icon="plus" @click="addTeam()"/>
-    <team-card-list :team-list="teamList"></team-card-list>
+    <team-card-list :team-list="teamList" :loading="loading"></team-card-list>
     <van-empty v-if="teamList?.length < 1" description="数据为空"/>
   </div>
 </template>
@@ -22,6 +22,7 @@ import {showFailToast, showSuccessToast} from "vant";
 const router = useRouter();
 const teamList = ref([]);
 const searchText = ref('');
+const loading = ref(true)
 //页面渲染完之后加载的，只加载一次
 onMounted(() => {
   listTeam('');
@@ -61,10 +62,12 @@ const listTeam = async (val = '', teamState = 0) => {
   });
   if (res?.code === 0) {
     teamList.value = res.data;
+    loading.value = false
   }
   else if(res?.code === 40001){
     teamList.value = [];
     showFailToast("暂无队伍信息，你先创建一个吧~~");
+    loading.value = false
   }
   else {
     showFailToast("加载队伍失败，请刷新");
