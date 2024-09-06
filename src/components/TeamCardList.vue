@@ -51,6 +51,7 @@ import {showFailToast, showSuccessToast} from "vant";
 import {onMounted, ref, watch} from 'vue';
 import {getCurrentUser} from "../services/user";
 import {useRouter} from "vue-router";
+import {formatDate} from "../utils/utils";
 
 //props传值
 interface TeamCardListProps {
@@ -180,19 +181,6 @@ const doDeleteTeam = async (id: number) => {
     showFailToast("操作失败" + (res.description ? `,${res.description}` : ''))
   }
 }
-
-
-// 格式化时间
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1; // getMonth() 返回值是 0-11 之间，所以需要加 1
-  const day = date.getDate();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-
-  return `${year}年${month}月${day}日${hours}点${minutes}分`;
-};
 
 </script>
 

@@ -16,7 +16,7 @@
     <van-cell title="电话" to="/user/edit" is-link :value="user.phone"
               @click="toEdit('phone','电话',user.phone)"/>
     <van-cell title="基地编号" :value="user.planetCode"/>
-    <van-cell title="注册时间" :value="user.createTime"/>
+    <van-cell title="注册时间" :value="formatDate(user.createTime)"/>
   </template>
 
 </template>
@@ -28,6 +28,7 @@ import myAxios from "../../plugins/myAxios.js";
 import {showFailToast, showSuccessToast} from "vant";
 import {getCurrentUser} from "../../services/user";
 import {FALLBACK_LOGO} from "../../constant";
+import {formatDate} from "../../utils/utils";
 
 const mockUser = {
   id: 1,
@@ -57,8 +58,9 @@ const toEdit = (editKey: string, editName: string, currentValue: string) => {
       currentValue,
     }
   })
-
 }
+
+
 </script>
 
 <style scoped>
