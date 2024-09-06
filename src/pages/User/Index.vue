@@ -4,9 +4,18 @@
       <van-switch v-model="isMatchMode"/>
     </template>
   </van-cell>
+  <van-skeleton
+      v-for="n in 5"
+      :key="n"
+      title
+      avatar
+      :row="3"
+      :loading="loadingOut"
+  >
   <user-card-list :user-list="userList" :loading="loading"></user-card-list>
+  </van-skeleton>
   <!--  todo 前端拦截器统一输出日志 -->
-  <van-empty v-if="!userList ||( !loading && userList.length < 1)" description="数据为空"/>
+  <van-empty v-if="isShowEmpty" description="数据为空"/>
 </template>
 
 <script setup lang="ts">
@@ -21,7 +30,9 @@ const route = useRoute();
 const {tags} = route.query;
 const isMatchMode = ref<Boolean>(false)
 const loading = ref(true);
+const loadingOut = ref(true);
 const userList = ref([]);
+const isShowEmpty = ref(false)
 
 const mockUser = {
   id: 1,
@@ -69,7 +80,6 @@ const loadData = async () => {
         .then(function (response) {
           // handle success
           console.log('/user/recommend', response);
-
           return response?.data?.records;
         })
         .catch(function (error) {
@@ -88,7 +98,11 @@ const loadData = async () => {
     })
     userList.value = userListData;
   }
+  else{
+    isShowEmpty.value = true
+  }
   loading.value = false
+  loadingOut.value= false
 }
 
 //监听变量的变化

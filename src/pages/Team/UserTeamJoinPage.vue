@@ -1,8 +1,16 @@
 <template>
   <div id = "teamPage">
     <van-search v-model="searchText" @search="onSearch" placeholder="请输入搜索队伍关键词" />
+    <van-skeleton
+        v-for="n in 5"
+        :key="n"
+        title
+        avatar
+        :row="3"
+        :loading="loadingOut"
+    />
     <team-card-list :team-list="teamList" :loading="loading"></team-card-list>
-    <van-empty v-if="!loading && teamList?.length < 1" description="数据为空"/>
+    <van-empty v-if="isShowEmpty" description="数据为空"/>
 
   </div>
 
@@ -19,6 +27,8 @@ const router = useRouter();
 const teamList = ref([]);
 const searchText = ref('');
 const loading = ref(true)
+const isShowEmpty = ref(false)
+const loadingOut = ref(true)
 //页面渲染完之后加载的，只加载一次
 onMounted( ()=>{
    listTeam('');
@@ -33,9 +43,18 @@ const listTeam = async (val) =>{
   if(res?.code === 0 ){
     teamList.value = res.data;
     loading.value = false
+    loadingOut.value = false
     // showSuccessToast("加载队伍成功");
   }else{
+    loading.value = false
+    loadingOut.value = false
+    isShowEmpty.value = true
     showFailToast("加载队伍失败，请刷新");
+  }
+  if(res.data.length === 0){
+    loading.value = false
+    loadingOut.value = false
+    isShowEmpty.value= true
   }
 }
 
