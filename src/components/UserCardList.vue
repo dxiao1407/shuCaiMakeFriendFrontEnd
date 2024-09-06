@@ -34,13 +34,13 @@ interface UserCardListProps {
 }
 // 接收来自父组件的 props
 //@ts-ignore
-const props = defineProps<UserCardListProps>();
+// const props = defineProps<UserCardListProps>();
 //@ts-ignore
-// const props = withDefaults(defineProps<UserCardListProps>(), {
-//   loading: true,
-//   // @ts-ignore
-//   userList: [] as UserType[],
-// });
+const props = withDefaults(defineProps<UserCardListProps>(), {
+  loading: true,
+  // @ts-ignore
+  userList: [] as UserType[],
+});
 
 </script>
 

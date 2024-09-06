@@ -1,5 +1,5 @@
 <template>
-  <UserCardList :user-list="userList"></UserCardList>
+  <UserCardList :user-list="userList" :loading="loading"></UserCardList>
   <van-empty v-if="!userList || userList.length < 1" description="搜索结果为空"/>
 </template>
 
@@ -14,7 +14,7 @@ import UserCardList from "../../components/UserCardList.vue";
 const route = useRoute();
 
 const {tags} = route.query;
-
+const loading = ref(true)
 const mockUser = {
   id: 1,
   userName: '火爆番茄炒蛋',
@@ -47,7 +47,7 @@ onMounted(async () => {
       .then(function (response) {
         // handle success
         console.log('/user/search/tags', response);
-        return response?.data;
+        return response.data?.records;
       })
       .catch(function (error) {
         // handle error
@@ -65,6 +65,7 @@ onMounted(async () => {
       }
     })
     userList.value = userListData;
+    loading.value = false
   }
 })
 
