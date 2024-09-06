@@ -57,26 +57,35 @@ const orginTagList = [
       {text: '女', id: '女'},
     ],
   },
-  {
-    text: '方向',
-    children: [
-      {text: 'Java', id: 'Java'},
-      {text: 'C++', id: 'C++'},
-      {text: 'C', id: 'C'},
-      {text: 'Python', id: 'Python'},
-      {text: 'Linux', id: 'Linux'},
-      {text: '运维', id: '运维'},
-      {text: 'GoLong', id: 'GoLong'},
-      {text: 'Android', id: 'Android'},
-      {text: '鸿蒙', id: '鸿蒙'},
-    ],
-  },
+
   {
     text: '水平',
     children: [
       {text: '初级', id: '初级'},
       {text: '中级', id: '中级'},
       {text: '高级', id: '高级'},
+    ],
+  },
+  {
+    text: '类型',
+    children: [
+      {text: '自行车', id: '自行车'},
+      {text: '公路车', id: '公路车'},
+      {text: '山地车', id: '山地车'},
+    ],
+  },
+  {
+    text: '其他',
+    children: [
+      {text: '越野', id: '越野'},
+      {text: '领队', id: '领队'},
+      {text: '捷飞', id: '捷飞'},
+      {text: '捷安特', id: '捷安特'},
+      {text: '美利达', id: '美利达'},
+      {text: '旅行者', id: '旅行者'},
+      {text: '共享单车', id: '共享单车'},
+      {text: '极限运动', id: '极限运动'},
+      {text: '长途', id: '长途'},
     ],
   },
 ];
