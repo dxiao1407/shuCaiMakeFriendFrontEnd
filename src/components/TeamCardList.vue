@@ -75,6 +75,7 @@ const preJoinTeam = (team:TeamType) => {
     doJoinTeam()
   } else {
     showPasswordDialog.value = true
+    doJoinTeam()
   }
 
 }
@@ -87,7 +88,6 @@ const doJoinTeam = async () => {
   if(!joinTeamId.value){
     return ;
   }
-  showPasswordDialog.value = true;
   const res = await myAxios.post("/team/join", {
     id: joinTeamId.value,
     teamPassword: inputPassword.value
