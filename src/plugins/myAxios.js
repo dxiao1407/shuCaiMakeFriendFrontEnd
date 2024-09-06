@@ -29,7 +29,7 @@ myAxios.interceptors.response.use(function (response) {
     //未登录重定向到登陆页面
     if(response?.data?.code === 40100  ){
         const redirect   = window.location.href;
-        window.location.href =` /user/login?redirectUrl=${redirect}`
+        window.location.href =` /user/login?redirect=${redirect}`
     }
     // Do something with response data
     return response.data;
