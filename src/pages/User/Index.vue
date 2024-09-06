@@ -4,9 +4,9 @@
       <van-switch v-model="isMatchMode"/>
     </template>
   </van-cell>
-  <user-card-list :user-list="userList" :loading = "loading"></user-card-list>
+  <user-card-list :user-list="userList" :loading="loading"></user-card-list>
   <!--  todo 前端拦截器统一输出日志 -->
-  <van-empty v-if="!userList || userList.length < 1" description="数据为空"/>
+  <van-empty v-if="!userList ||( !loading && userList.length < 1)" description="数据为空"/>
 </template>
 
 <script setup lang="ts">
@@ -20,7 +20,7 @@ import {showFailToast, showSuccessToast} from "vant";
 const route = useRoute();
 const {tags} = route.query;
 const isMatchMode = ref<Boolean>(false)
-const loading =ref(true);
+const loading = ref(true);
 const userList = ref([]);
 
 const mockUser = {
@@ -96,7 +96,6 @@ watchEffect(() => {
   loadData()
 
 })
-
 
 
 </script>

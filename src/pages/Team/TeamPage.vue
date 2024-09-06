@@ -8,7 +8,7 @@
     <div style="margin-bottom: 8px"/>
     <van-button class="add-button" type="primary" icon="plus" @click="addTeam()"/>
     <team-card-list :team-list="teamList" :loading="loading"></team-card-list>
-    <van-empty v-if="teamList?.length < 1" description="数据为空"/>
+    <van-empty v-if="!loading && teamList?.length < 1" description="数据为空"/>
   </div>
 </template>
 
@@ -63,13 +63,11 @@ const listTeam = async (val = '', teamState = 0) => {
   if (res?.code === 0) {
     teamList.value = res.data;
     loading.value = false
-  }
-  else if(res?.code === 40001){
+  } else if (res?.code === 40001) {
     teamList.value = [];
     showFailToast("暂无队伍信息，你先创建一个吧~~");
     loading.value = false
-  }
-  else {
+  } else {
     showFailToast("加载队伍失败，请刷新");
   }
 }

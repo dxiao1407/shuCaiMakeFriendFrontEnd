@@ -2,7 +2,7 @@
   <div id = "teamPage">
     <van-search v-model="searchText" @search="onSearch" placeholder="请输入搜索队伍关键词" />
     <team-card-list :team-list="teamList" :loading="loading"></team-card-list>
-    <van-empty v-if="teamList?.length < 1" description="数据为空"/>
+    <van-empty v-if="!loading && teamList?.length < 1" description="数据为空"/>
 
   </div>
 
