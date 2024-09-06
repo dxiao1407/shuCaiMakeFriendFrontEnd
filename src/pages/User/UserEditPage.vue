@@ -34,7 +34,6 @@ const editUser = ref({
 })
 
 
-
 const onSubmit = async (values) => {
 //todo 提交到后台 editKey editName currentUser
   const currentUser = await getCurrentUser();
@@ -42,10 +41,16 @@ const onSubmit = async (values) => {
     showFailToast("用户没登录");
     return;
   }
+  if(editUser.value.currentUser === '男'){
+    editUser.value.currentUser = 1
+  }
+  else if(editUser.value.currentUser === '女'){
+    editUser.value.currentUser = 0
+  }
 
   const res = await myAxios.post("/user/update", {
     "id" : currentUser.id,
-    [editUser.value.editKey as string]: editUser.value.currentUser === '男' ? 1 :0
+    [editUser.value.editKey as string]: editUser.value.currentUser
   })
 
   if(res.data > 0 ){

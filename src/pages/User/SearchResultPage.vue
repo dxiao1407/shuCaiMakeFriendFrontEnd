@@ -36,7 +36,9 @@ const userList = ref([]);
 onMounted(async () => {
   const userListData = await myAxios.get('/user/search/tags', {
     params: {
-      tagNameList: tags
+      tagNameList: tags,
+      pageSize: 8,
+      pageNumber: 1
     },
     paramsSerializer: params => {
       return qs.stringify(params, {indices: false})
