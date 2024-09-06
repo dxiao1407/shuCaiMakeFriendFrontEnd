@@ -11,9 +11,8 @@
       avatar
       :row="3"
       :loading="loadingOut"
-  >
+  />
   <user-card-list :user-list="userList" :loading="loading"></user-card-list>
-  </van-skeleton>
   <!--  todo 前端拦截器统一输出日志 -->
   <van-empty v-if="isShowEmpty" description="数据为空"/>
 </template>
