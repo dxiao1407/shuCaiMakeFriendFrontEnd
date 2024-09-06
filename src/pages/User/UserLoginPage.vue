@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import myAxios from "../../plugins/myAxios.js";
 import {showFailToast, showSuccessToast} from "vant";
 import {useRoute, useRouter} from "vue-router";
@@ -57,7 +57,10 @@ const onSubmit = async () => {
     showFailToast("登录失败");
   }
 };
+onMounted(()=>{
+  showFailToast("当前未登录，请先登录")
 
+})
 
 </script>
 
