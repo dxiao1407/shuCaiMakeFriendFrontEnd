@@ -61,8 +61,12 @@ const listTeam = async (val = '', teamState = 0) => {
   });
   if (res?.code === 0) {
     teamList.value = res.data;
-    // showSuccessToast("加载队伍成功");
-  } else {
+  }
+  else if(res?.code === 40001){
+    teamList.value = [];
+    showFailToast("暂无队伍信息，你先创建一个吧~~");
+  }
+  else {
     showFailToast("加载队伍失败，请刷新");
   }
 }

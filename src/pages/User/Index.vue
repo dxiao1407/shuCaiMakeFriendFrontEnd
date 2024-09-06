@@ -20,7 +20,8 @@ import {showFailToast, showSuccessToast} from "vant";
 const route = useRoute();
 const {tags} = route.query;
 const isMatchMode = ref<Boolean>(false)
-const loading =ref(true)
+const loading =ref(true);
+const userList = ref([]);
 
 const mockUser = {
   id: 1,
@@ -90,7 +91,6 @@ const loadData = async () => {
   loading.value = false
 }
 
-const userList = ref([]);
 //监听变量的变化
 watchEffect(() => {
   loadData()

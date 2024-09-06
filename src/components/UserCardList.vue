@@ -1,6 +1,5 @@
 <template>
   <van-skeleton title avatar :row="3" :loading="props.loading" v-for="(user, index) in props.userList">
-
     <van-card
         :key="index"
         :tag="user.userRole === 0 ? '' : 'VIP'"
@@ -33,13 +32,15 @@ interface UserCardListProps {
   loading:Boolean
   userList: UserType[];
 }
-
+// 接收来自父组件的 props
 //@ts-ignore
-const props = withDefaults(defineProps<UserCardListProps>(), {
-  loading: true,
-  // @ts-ignore
-  userList: [] as UserType[],
-});
+const props = defineProps<UserCardListProps>();
+//@ts-ignore
+// const props = withDefaults(defineProps<UserCardListProps>(), {
+//   loading: true,
+//   // @ts-ignore
+//   userList: [] as UserType[],
+// });
 
 </script>
 
