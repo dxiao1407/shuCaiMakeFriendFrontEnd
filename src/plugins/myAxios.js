@@ -1,4 +1,5 @@
 import axios from "axios";
+import {showFailToast} from "vant";
 
 // const isDev = process.env.NODE_PATH === 'development'
 // const myAxios = axios.create({
@@ -28,6 +29,7 @@ myAxios.interceptors.response.use(function (response) {
     // console.log("我收到相应啦！！！",response);
     //未登录重定向到登陆页面
     if(response?.data?.code === 40100  ){
+        showFailToast("当前未登录，请先登录")
         const redirect   = window.location.href;
         window.location.href =` /user/login?redirect=${redirect}`
     }
