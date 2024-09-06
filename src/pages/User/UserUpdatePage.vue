@@ -3,14 +3,14 @@
     <van-cell title="昵称" to="/user/edit" is-link :value="user.userName"
               @click="toEdit('userName','昵称',user.userName)"/>
     <van-cell title="账号" :value="user.userAccount"/>
-    <van-cell title="头像" to="/user/edit" is-link>
+    <van-cell title="头像"  >
       <van-image
           width="50"
           :src="user.avatarUrl ? user.avatarUrl:FALLBACK_LOGO"
       />
     </van-cell>
     <van-cell title="性别" to="/user/edit" is-link :value="user.gender ==1 ? '男':'女'"
-              @click="toEdit('gender','性别',user.gender)"/>
+              @click="toEdit('gender','性别',user.gender ==1 ? '男':'女')"/>
     <van-cell title="邮箱" to="/user/edit" is-link :value="user.email"
               @click="toEdit('email','邮箱',user.email)"/>
     <van-cell title="电话" to="/user/edit" is-link :value="user.phone"

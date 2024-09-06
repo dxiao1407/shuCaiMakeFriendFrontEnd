@@ -15,7 +15,7 @@ myAxios.defaults.withCredentials = true//开启发送请求带着cookie
 
 // Add a request interceptor
 myAxios.interceptors.request.use(function (config) {
-    console.log("我要发请求啦！！！",config);
+    // console.log("我要发请求啦！！！",config);
     // Do something before request is sent
     return config;
 }, function (error) {
@@ -25,7 +25,7 @@ myAxios.interceptors.request.use(function (config) {
 
 // Add a response interceptor
 myAxios.interceptors.response.use(function (response) {
-    console.log("我收到相应啦！！！",response);
+    // console.log("我收到相应啦！！！",response);
     //未登录重定向到登陆页面
     if(response?.data?.code === 40100  ){
         // const redirectUrl   = window.location.href;

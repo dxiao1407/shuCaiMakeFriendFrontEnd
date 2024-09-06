@@ -16,4 +16,5 @@ export type TeamType = {
     updateTime: Date;
     userVoList?:UserType;
     hasJoin:boolean
+    hasJoinNum:number
 };

@@ -45,7 +45,7 @@ const onSubmit = async (values) => {
 
   const res = await myAxios.post("/user/update", {
     "id" : currentUser.id,
-    [editUser.value.editKey as string]: editUser.value.currentUser
+    [editUser.value.editKey as string]: editUser.value.currentUser === '男' ? 1 :0
   })
 
   if(res.data > 0 ){

@@ -5,7 +5,7 @@
           v-model="userAccount"
           name="userAccount"
           label="账号"
-          placeholder="请输入账号"
+          placeholder="测试账号名：shucai666"
           :rules="[{ required: true, message: '请填写用户名' }]"
       />
       <van-field
@@ -13,7 +13,7 @@
           type="password"
           name="userPassword"
           label="密码"
-          placeholder="请输入密码"
+          placeholder="测试账号密码：12345678"
           :rules="[{ required: true, message: '请填写密码' }]"
       />
     </van-cell-group>
@@ -37,7 +37,7 @@ const router = useRouter();
 const route = useRoute();
 const userAccount = ref('');
 const userPassword = ref('');
-const onSubmit = async (values) => {
+const onSubmit = async () => {
 
   const res = await myAxios.post("/user/login", {
     userAccount: userAccount.value,
@@ -48,10 +48,10 @@ const onSubmit = async (values) => {
     showSuccessToast("登录成功");
     // router.replace("/");//和push不同的是，它可以覆盖这个路径，如果回退的话，就不会回到登录页面，而是回到登录之前的页面
     //这里是路由上带的参数
-    router.back()
-    // const redirectUrl = route.query?.redirect as String  ;
+    // router.back()
+    const redirectUrl = route.query?.redirect as String  ;
     // console.log("redicerUrl",redirectUrl)
-    // window.location.href = redirectUrl;
+    window.location.href = redirectUrl;
   }
   else{
     showFailToast("登录失败");

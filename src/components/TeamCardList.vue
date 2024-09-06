@@ -7,11 +7,10 @@
         :tag="teamStatusEnum[team.teamState]"
         :thumb="FALLBACK_LOGO"
         :desc="team.description"
-        :title="`${team.teamName}#当前人数:${userLengths[index]}`"
+        :title="`${team.teamName}#人数(${team.hasJoinNum}/${team.maxNum})`"
     >
       <!-- tags 插槽 -->
       <template #bottom>
-        <div>{{ '最大人数:' + team.maxNum }}</div>
         <div>{{ '创建时间:' + formatDate(team.createTime) }}</div>
         <div v-if="team.expireTime">{{ '过期时间:' + formatDate(team.expireTime) }}</div>
       </template>
@@ -125,14 +124,14 @@ const getUserCountForTeams = async (teamList) => {
   userLengths.value = await Promise.all(promises);
 };
 //确保 props.teamList 在组件挂载时已经准备好，并且在 teamList 变化时重新发起请求。
-watch(() => props.teamList, (newVal) => {
-  if (newVal && newVal.length > 0) {
-    getUserCountForTeams(newVal);
-  }
-}, {immediate: true});
+// watch(() => props.teamList, (newVal) => {
+//   if (newVal && newVal.length > 0) {
+//     getUserCountForTeams(newVal);
+//   }
+// }, {immediate: true});
 //组件渲染完成后执行
 onMounted(async () => {
-  await getUserCountForTeams(props.teamList);
+  // await getUserCountForTeams(props.teamList);
   currentUser.value = await getCurrentUser()
 });
 /**
