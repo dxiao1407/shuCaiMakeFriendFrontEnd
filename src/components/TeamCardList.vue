@@ -79,7 +79,6 @@ const preJoinTeam = (team: TeamType) => {
     doJoinTeam()
   } else {
     showPasswordDialog.value = true
-    doJoinTeam()
   }
 
 }
@@ -128,13 +127,7 @@ const getUserCountForTeams = async (teamList) => {
   });
   userLengths.value = await Promise.all(promises);
 };
-//确保 props.teamList 在组件挂载时已经准备好，并且在 teamList 变化时重新发起请求。
-// watch(() => props.teamList, (newVal) => {
-//   if (newVal && newVal.length > 0) {
-//     getUserCountForTeams(newVal);
-//   }
-// }, {immediate: true});
-//组件渲染完成后执行
+
 onMounted(async () => {
   // await getUserCountForTeams(props.teamList);
   currentUser.value = await getCurrentUser()

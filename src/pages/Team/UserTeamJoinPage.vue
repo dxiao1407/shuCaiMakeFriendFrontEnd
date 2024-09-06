@@ -45,17 +45,18 @@ const listTeam = async (val) =>{
     loading.value = false
     loadingOut.value = false
     // showSuccessToast("加载队伍成功");
-  }else{
+  }else if(res?.code === 40001){
+    loading.value = false
+    loadingOut.value = false
+    isShowEmpty.value= true
+  }
+  else{
     loading.value = false
     loadingOut.value = false
     isShowEmpty.value = true
     showFailToast("加载队伍失败，请刷新");
   }
-  if(res.data.length === 0){
-    loading.value = false
-    loadingOut.value = false
-    isShowEmpty.value= true
-  }
+
 }
 
 const onSearch =  (val) => {
