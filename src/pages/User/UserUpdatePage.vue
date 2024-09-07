@@ -3,10 +3,18 @@
     <van-cell title="昵称" to="/user/edit" is-link :value="user.userName"
               @click="toEdit('userName','昵称',user.userName)"/>
     <van-cell title="账号" :value="user.userAccount"/>
-    <van-cell title="头像"  >
+    <van-cell title="头像" is-link @click="triggerUpload">
       <van-image
           width="50"
-          :src="user.avatarUrl ? user.avatarUrl:FALLBACK_LOGO"
+          :src="user.avatarUrl ? user.avatarUrl : FALLBACK_LOGO"
+      />
+      <!-- 隐藏的上传组件，用于处理文件上传 -->
+      <van-uploader
+          ref="uploaderRef"
+          :after-read="handleUpload"
+          :max-count="1"
+          accept="image/*"
+          style="display: none"
       />
     </van-cell>
     <van-cell title="性别" to="/user/edit" is-link :value="user.gender ==1 ? '男':'女'"
@@ -23,7 +31,7 @@
 
 <script setup lang="ts">
 import {useRouter} from "vue-router";
-import {onMounted, ref} from "vue";
+import {onMounted, nextTick,ref} from "vue";
 import myAxios from "../../plugins/myAxios.js";
 import {showFailToast, showSuccessToast} from "vant";
 import {getCurrentUser} from "../../services/user";
@@ -41,13 +49,15 @@ const mockUser = {
   planentCode: "123",
   createTime: new Date(),
 };
+
 onMounted(async () => {
   user.value = await getCurrentUser();
 
 })
-
 const user = ref();
 const router = useRouter();
+const uploaderRef = ref(null); // 用于引用 van-uploader 组件
+
 const toEdit = (editKey: string, editName: string, currentValue: string) => {
   router.push({
     path: '/user/edit',
@@ -59,7 +69,27 @@ const toEdit = (editKey: string, editName: string, currentValue: string) => {
     }
   })
 }
-
+const triggerUpload = async () => {
+    uploaderRef.value.chooseFile(); // 调用 van-uploader 组件的选择文件功能
+};
+const handleUpload = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file.file); // 将文件添加到 FormData 对象中
+  try {
+    // 使用 axios 发送 POST 请求上传文件
+    const res = await myAxios.post('/cos/upload', formData);
+    if (res.code === 0) {
+      // 上传成功后，更新用户头像
+      showSuccessToast('头像上传成功！')
+      user.value = await getCurrentUser();
+    } else {
+      showFailToast('上传失败: ' + data.message)
+    }
+  } catch (error) {
+    console.error('上传头像时发生错误：', error);
+    showFailToast('上传失败，请重试')
+  }
+};
 
 </script>
 

@@ -41,5 +41,6 @@ declare module 'vue' {
     VanTag: typeof import('vant/es')['Tag']
     VanTimePicker: typeof import('vant/es')['TimePicker']
     VanTreeSelect: typeof import('vant/es')['TreeSelect']
+    VanUploader: typeof import('vant/es')['Uploader']
   }
 }
