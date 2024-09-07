@@ -75,6 +75,7 @@ const triggerUpload = async () => {
 const handleUpload = async (file) => {
   const formData = new FormData();
   formData.append('file', file.file); // 将文件添加到 FormData 对象中
+  formData.append('avatarsUrl', 'user');  // 动态传入 'avatarsUrl'，可以是 'user' 或 'team'
   try {
     // 使用 axios 发送 POST 请求上传文件
     const res = await myAxios.post('/cos/upload', formData);

@@ -8,6 +8,7 @@ export type TeamType = {
     teamName: string;
     description: string;
     maxNum: number;
+    avatarsUrl?:string
     expireTime?: Date;
     //todo 定义枚举值、更规范
     teamState: number;
