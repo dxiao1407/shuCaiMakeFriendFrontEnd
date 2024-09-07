@@ -1,5 +1,6 @@
 <template>
   <form action="/public">
+<!--    todo  搜索用户、标签、名称、描述-->
     <van-search
         v-model="searchValue"
         show-action
@@ -13,6 +14,8 @@
   <div style="text-align: center;">
     <van-tag v-if="activeTagsIds.length === 0" plain type="primary">暂无标签</van-tag>
   </div>
+  <!--    todo  标签搜索 骨架屏-->
+
   <van-row gutter="20">
     <van-col v-for="tag in activeTagsIds" :key="tag">
       <van-tag closeable size="small" type="primary" @close="closeTag(tag)">
