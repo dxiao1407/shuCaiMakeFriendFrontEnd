@@ -10,6 +10,7 @@ import SearchResultPage from "../pages/User/SearchResultPage.vue";
 import UserLoginPage from "../pages/User/UserLoginPage.vue";
 import UserTeamCreatePage from "../pages/Team/UserTeamCreatePage.vue";
 import UserTeamJoinPage from "../pages/Team/UserTeamJoinPage.vue";
+import UserWebsocket from "../pages/User/UserWebsocket.vue";
 
 
 const routes = [
@@ -25,6 +26,8 @@ const routes = [
     { path: '/user/login',name:"登录", component: UserLoginPage },
     { path: '/user/team/create',name:"创建队伍", component: UserTeamCreatePage },
     { path: '/user/team/join',name:"加入队伍", component: UserTeamJoinPage },
+    { path: '/user/chat',name:"骑友对话", component: UserWebsocket },
+
 
 ]
 export default routes;

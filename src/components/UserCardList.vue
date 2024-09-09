@@ -17,7 +17,7 @@
 
       <!-- footer 插槽 -->
       <template #footer>
-        <van-button size="mini">CallMe</van-button>
+        <van-button size="mini" @click="onChat(user.id)" :user="user">CallMe</van-button>
       </template>
     </van-card>
   </van-skeleton>
@@ -26,7 +26,10 @@
 <script setup lang="ts">
 import {UserType} from "../models/user";
 import {FALLBACK_LOGO} from "../constant";
+import {useRouter} from "vue-router";
+import {ref} from "vue";
 
+const router = useRouter()
 //props传值
 interface UserCardListProps {
   loading:Boolean
@@ -41,6 +44,16 @@ const props = withDefaults(defineProps<UserCardListProps>(), {
   // @ts-ignore
   userList: [] as UserType[],
 });
+const onChat = (userId : number) => {
+  router.push({
+    path: '/user/chat',
+    query: {
+      // user: JSON.stringify(user),
+      id:userId
+    },
+  });
+};
+
 
 </script>
 
