@@ -4,7 +4,7 @@
       <van-card
           :key="index"
           :tag="teamStatusEnum[team.teamState]"
-          :thumb="FALLBACK_LOGO"
+          :thumb="team.teamAvatar ?? FALLBACK_LOGO"
           :desc="team.description"
           :title="`${team.teamName}#人数(${team.hasJoinNum}/${team.maxNum})`"
       >

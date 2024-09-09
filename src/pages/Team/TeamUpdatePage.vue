@@ -17,6 +17,15 @@
             type="textarea"
             placeholder="请输入队伍描述"
         />
+        <van-cell title="头像" >
+          <!-- 隐藏的上传组件，用于处理文件上传 -->
+          <van-uploader
+              v-model="fileList" multiple
+              :after-read="handleUpload"
+              :max-count="1"
+              accept="image/*"
+          />
+        </van-cell>
         <van-field
             is-link
             readonly
@@ -83,6 +92,7 @@ import {useRoute, useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import myAxios from "../../plugins/myAxios.js";
 import {showSuccessToast, showFailToast} from "vant";
+import {getCurrentUser} from "../../services/user";
 
 const router = useRouter();
 const route = useRoute();
@@ -92,6 +102,8 @@ const minDate = new Date();
 const currentDate = ref(['2022', '06', '01']);		//定义一个初始时间(年月日)
 const currentTime = ref(['12', '00', '00']);		//定义一个初始时间(时分秒)
 const columnsType = ['hour', 'minute', 'second'];
+const fileList = ref([])
+
 
 const onConfirm = () => {
   //组合过期时间，'T'是满足后端序列化配的
@@ -113,11 +125,11 @@ const userLengths = route.query.userLengths;
 
 //获取之前的队伍信息
 onMounted(async () =>{
-  const res = await myAxios.get("/team/get",{
-    params:{
-      id : teamId
-    }
-  })
+  const res = await myAxios.get("/team/get", {
+    params: {
+      id: teamId
+    },
+  });
   if (res?.code === 0 && res.data) {
     addTeamData.value = res.data
   } else {
@@ -144,4 +156,30 @@ const onSubmit = async () => {
     showFailToast('更新失败');
   }
 }
+
+
+const handleUpload = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file.file); // 将文件添加到 FormData 对象中
+  formData.append('avatarsUrl', 'team');  // 动态传入 'avatarsUrl'，可以是 'user' 或 'team'
+  formData.append('teamId', teamId.toString());  // 将 number 转为 string
+
+  try {
+    // 使用 axios 发送 POST 请求上传文件
+    const res = await myAxios.post('/cos/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',  // 自定义请求头
+      }
+    });
+    if (res.code === 0) {
+      // 上传成功后，更新用户头像
+      showSuccessToast('头像上传成功！')
+    } else {
+      showFailToast('上传失败: ' + data.message)
+    }
+  } catch (error) {
+    console.error('上传头像时发生错误：', error);
+    showFailToast('上传失败，请重试')
+  }
+};
 </script>

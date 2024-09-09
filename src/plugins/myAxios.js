@@ -9,9 +9,6 @@ import {showFailToast} from "vant";
 const myAxios = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL ||'http://localhost:8080/api',
     // baseURL: '/api',  // 改为 '/api'，通过代理进行请求
-    headers: {
-        'Content-Type': 'multipart/form-data',  // 上传文件时需要 multipart/form-data
-    },
 });
 
 
