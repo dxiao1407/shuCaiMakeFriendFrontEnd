@@ -1,18 +1,15 @@
 <template>
   <van-cell-group>
     <div id="output" ref="output" style="border:1px solid #ccc; height:365px; overflow: auto; margin: 20px 0;">
-      <!-- 动态渲染消息，判断是否为当前用户发送 -->
       <div
           v-for="(msg, index) in messages"
           :key="index"
           :class="{'message-right': msg.senderId === currentUser?.id, 'message-left': msg.senderId !== currentUser?.id}"
           class="message-wrapper"
       >
-        <div class="message-content">
-          <span v-if="msg.senderId === currentUser?.id"></span>
-          <span v-else></span>
+        <div class="message-content" v-if="msg.messageText"> <!-- 确保有消息内容时才渲染 -->
           <p>{{ msg.messageText }}</p>
-          <small>{{ formatDate(msg.timestamp) }}</small>
+          <small v-if="formatDate(msg.timestamp)">{{ formatDate(msg.timestamp) }}</small>
         </div>
       </div>
     </div>
@@ -46,32 +43,38 @@ const generateRoomId = (id1, id2) => {
 };
 
 onMounted(async () => {
-  // 获取传递过来的 user 参数（接收者）
-  // user.value = JSON.parse(route.query.user as string);
-  userId.value = route.query.id
-  console.log(userId.value)
-  // 获取当前登录的用户（发送者）
+  // 初始化时清理空的消息对象
+  messages.value = messages.value.filter(msg => msg && msg.messageText);
+  userId.value = route.query.id;
   currentUser.value = await getCurrentUser();
 
   if (userId.value && currentUser.value) {
-    // 生成房间 ID
     const roomId = generateRoomId(currentUser.value.id, userId.value);
-    // 设置 WebSocket 地址，将 roomId 作为 WebSocket 的连接地址
     wsAddr.value = `ws://localhost:8080/api/websocket/${roomId}/${currentUser.value.id}`;
-    connectWebSocket(); // 自动连接
+    connectWebSocket();
   } else {
-    showFailToast("无法获取用户信息")
+    showFailToast("无法获取用户信息");
   }
-  // 等待 DOM 完全渲染完成后滚动到底部
+
   nextTick(() => {
     if (output.value) {
-      output.value.scrollTop = output.value.scrollHeight; // 页面加载时滚动到底部
+      output.value.scrollTop = output.value.scrollHeight;
     }
   });
 });
 
+
 const formatDate = (timestamp) => {
+  if (!timestamp) {
+    return '未知时间'; // 当 timestamp 为空或未定义时，返回空字符串
+  }
+
   const now = new Date(timestamp);
+
+  if (isNaN(now.getTime())) { // 检查日期对象是否有效
+    return '未知时间'; // 如果日期无效，返回空字符串
+  }
+
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const date = String(now.getDate()).padStart(2, '0');
@@ -80,6 +83,8 @@ const formatDate = (timestamp) => {
   const second = String(now.getSeconds()).padStart(2, '0');
   return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
 };
+
+
 
 const writeToScreen = (message) => {
   messages.value.push(message);
@@ -94,7 +99,7 @@ const writeToScreen = (message) => {
  */
 const connectWebSocket = () => {
   if (wsAddr.value === '') {
-    Toast('WebSocket地址未设置');
+    showFailToast('WebSocket地址未设置')
     return;
   }
 
@@ -110,10 +115,16 @@ const connectWebSocket = () => {
     writeToScreen("<span style='color:red'>WebSocket连接已断开!!!</span>");
   };
   //接受后端信息
-  websocket.onmessage =async (event) => {
-    console.log("收到服务器返回的信息:", event.data);
+  websocket.onmessage = async (event) => {
     try {
       const receivedData = JSON.parse(event.data);
+
+      // 检查消息的完整性
+      if (!receivedData.messageText || !receivedData.timestamp) {
+        console.warn("收到不完整的消息，已忽略:", receivedData);
+        return; // 忽略不完整的消息
+      }
+
       // 将收到的消息推入到 messages 列表中
       messages.value.push(receivedData);
       await nextTick();
@@ -125,6 +136,7 @@ const connectWebSocket = () => {
       writeToScreen(`<span style="color:green">系统消息: ${event.data}</span>`);
     }
   };
+
 
   websocket.onerror = (event) => {
     writeToScreen('<span style="color: red;">发生错误:</span> ' + event.data);
