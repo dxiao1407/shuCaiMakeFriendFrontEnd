@@ -35,7 +35,8 @@ const message = ref('');
 const messages = ref([]);
 let websocket = null;
 const output = ref(null);
-
+const isDev = import.meta.env.DEV; // 检查是否为开发环境
+const baseUrl = import.meta.env.VITE_API_BASE_URL; // 获取 API 基础 URL
 
 // 生成房间ID，确保无论发送者接收者谁先连接都能连接到同一个房间
 const generateRoomId = (id1, id2) => {
@@ -50,7 +51,8 @@ onMounted(async () => {
 
   if (userId.value && currentUser.value) {
     const roomId = generateRoomId(currentUser.value.id, userId.value);
-    wsAddr.value = `ws://localhost:8080/api/websocket/${roomId}/${currentUser.value.id}`;
+    wsAddr.value = `${isDev ? 'ws' : 'wss'}://${baseUrl.replace(/^https?:\/\//, '')}/websocket/${roomId}/${currentUser.value.id}`;
+    // wsAddr.value = `ws://localhost:8080/api/websocket/${roomId}/${currentUser.value.id}`;
     connectWebSocket();
   } else {
     showFailToast("无法获取用户信息");
